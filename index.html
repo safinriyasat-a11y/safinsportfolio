@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Portfolio — Safin Riyasat</title>
+<meta name="description" content="Minimal green and black multimedia portfolio." />
+<style>
+  :root{
+    --bg:#050706;
+    --bg-2:#08100b;
+    --panel:rgba(255,255,255,.045);
+    --panel-strong:rgba(255,255,255,.075);
+    --line:rgba(255,255,255,.10);
+    --text:#f4f7f5;
+    --muted:#9ca7a0;
+    --green:#46f58a;
+    --green-2:#16c96a;
+    --ease:cubic-bezier(.22,1,.36,1);
+    --danger:#ff5f67;
+    --radius:26px;
+    --shadow:0 20px 70px rgba(0,0,0,.32);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-feature-settings:"ss01" 1,"cv11" 1;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    color:var(--text);
+    background:var(--bg);
+    min-height:100vh;
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  /* Interactive Scroll-Driven Background Gradients */
+  .ambient-bg{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:-1;
+    overflow:hidden;
+    background:
+      radial-gradient(circle at 50% 50%, #060907 0%, #030504 100%);
+  }
+  .ambient-orb{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(95px);
+    opacity:.58;
+    will-change:transform;
+    transition:transform .22s cubic-bezier(.16,1,.3,1);
+  }
+  .orb-1{
+    width:min(680px,80vw);
+    height:min(680px,80vw);
+    background:radial-gradient(circle,rgba(70,245,138,.24) 0%,rgba(22,201,106,.08) 55%,transparent 72%);
+    top:-8%;
+    right:-10%;
+    transform:translate3d(calc(var(--scroll-percent, 0) * -220px), calc(var(--scroll-percent, 0) * 440px), 0) rotate(calc(var(--scroll-percent, 0) * 55deg));
+    animation:ambientFloat1 16s ease-in-out infinite alternate;
+  }
+  .orb-2{
+    width:min(780px,85vw);
+    height:min(780px,85vw);
+    background:radial-gradient(circle,rgba(22,201,106,.18) 0%,rgba(70,245,138,.05) 55%,transparent 75%);
+    top:30%;
+    left:-18%;
+    transform:translate3d(calc(var(--scroll-percent, 0) * 320px), calc(var(--scroll-percent, 0) * -280px), 0) scale(calc(1 + var(--scroll-percent, 0) * .25));
+    animation:ambientFloat2 20s ease-in-out infinite alternate;
+  }
+  .orb-3{
+    width:min(600px,72vw);
+    height:min(600px,72vw);
+    background:radial-gradient(circle,rgba(70,245,138,.16) 0%,rgba(10,50,25,.08) 60%,transparent 78%);
+    bottom:-12%;
+    right:8%;
+    transform:translate3d(calc(var(--scroll-percent, 0) * -240px), calc(var(--scroll-percent, 0) * -320px), 0) scale(calc(0.92 + var(--scroll-percent, 0) * .3));
+    animation:ambientFloat1 18s ease-in-out infinite alternate-reverse;
+  }
+  .ambient-grid{
+    position:absolute;
+    inset:0;
+    background-image:radial-gradient(rgba(255,255,255,.05) 1px, transparent 1px);
+    background-size:38px 38px;
+    opacity:.32;
+    mask-image:radial-gradient(circle at center, black 40%, transparent 90%);
+    -webkit-mask-image:radial-gradient(circle at center, black 40%, transparent 90%);
+  }
+
+  @keyframes ambientFloat1{
+    0%{filter:blur(95px);opacity:.55}
+    50%{filter:blur(110px);opacity:.68}
+    100%{filter:blur(90px);opacity:.52}
+  }
+  @keyframes ambientFloat2{
+    0%{filter:blur(100px);opacity:.50}
+    50%{filter:blur(85px);opacity:.65}
+    100%{filter:blur(105px);opacity:.48}
+  }
+  button,input,textarea,select{font:inherit}
+  button{cursor:pointer}
+
+  .shell{width:min(1180px,calc(100% - 36px));margin:auto}
+  nav{
+    position:sticky;top:0;z-index:30;
+    backdrop-filter:blur(22px);
+    background:rgba(5,7,6,.72);
+    border-bottom:1px solid rgba(255,255,255,.06);
+  }
+  .nav-inner{
+    height:72px;display:flex;align-items:center;justify-content:space-between;gap:16px;
+  }
+  .brand{display:flex;align-items:center;gap:10px;font-weight:720;letter-spacing:-.03em;cursor:pointer;user-select:none}
+  .mark{
+    width:12px;height:12px;border-radius:50%;
+    background:var(--green);box-shadow:0 0 24px rgba(66,245,129,.75);
+    transition:transform .3s var(--ease);
+  }
+  .brand:hover .mark{transform:scale(1.2)}
+  .nav-links{display:flex;gap:26px}
+  .nav-links a{color:var(--muted);text-decoration:none;font-size:14px}
+  .nav-links a:hover{color:white}
+  .actions{display:flex;gap:9px;align-items:center}
+  .btn{
+    border:1px solid var(--line);background:var(--panel);color:var(--text);
+    border-radius:999px;padding:10px 15px;transition:transform .35s var(--ease),background .35s ease,border-color .35s ease;
+    font-size:13px;font-weight:600;letter-spacing:-.01em;display:inline-flex;align-items:center;gap:6px;
+  }
+  .btn:hover{background:var(--panel-strong);transform:translateY(-1px)}
+  .btn.primary{background:var(--green);color:#041108;border-color:transparent;font-weight:750}
+  .btn.danger{color:#ffd8da;border-color:rgba(255,95,103,.35)}
+
+  /* Owner Mode Visibility Controls */
+  .owner-only{display:none!important}
+  body.is-owner .owner-only{display:inline-flex!important}
+
+  .hero{
+    min-height:78vh;display:grid;grid-template-columns:1.28fr .72fr;gap:56px;align-items:center;
+    padding:80px 0 60px;
+  }
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:9px;
+    color:#c8d0cb;font-size:13px;letter-spacing:.08em;text-transform:uppercase;
+  }
+  .eyebrow i{width:7px;height:7px;border-radius:50%;background:var(--green)}
+  h1{
+    font-size:clamp(58px,9vw,118px);line-height:.88;letter-spacing:-.07em;
+    margin:22px 0 26px;max-width:920px;font-weight:760;
+  }
+  h1 .accent{color:var(--green)}
+  .lead{max-width:690px;color:var(--muted);font-size:clamp(17px,2vw,22px);line-height:1.6}
+  .hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+
+  .portrait-wrap{display:flex;justify-content:center}
+  .portrait-card{
+    width:min(100%,390px);aspect-ratio:4/5;border-radius:38px;overflow:hidden;
+    position:relative;background:linear-gradient(145deg,#0d1a12,#050706);
+    border:1px solid var(--line);box-shadow:var(--shadow);
+  }
+  .portrait-card img{width:100%;height:100%;object-fit:cover;display:none}
+  .portrait-placeholder{
+    height:100%;display:grid;place-items:center;text-align:center;padding:35px;color:var(--muted)
+  }
+  .portrait-placeholder b{display:block;color:var(--text);font-size:28px;margin-bottom:8px}
+  .portrait-card::after{
+    content:"";position:absolute;inset:auto -30% -35% 25%;height:55%;
+    background:radial-gradient(circle,rgba(66,245,129,.22),transparent 60%);pointer-events:none;
+  }
+
+  section{padding:82px 0}
+  .section-head{display:flex;justify-content:space-between;gap:24px;align-items:end;margin-bottom:30px}
+  .kicker{color:var(--green);font-size:13px;text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px}
+  h2{font-size:clamp(36px,5vw,62px);letter-spacing:-.05em;margin:0}
+  .section-note{color:var(--muted);max-width:440px;line-height:1.6}
+
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:40px}
+  .stat{
+    padding:25px;border-radius:22px;border:1px solid var(--line);background:var(--panel);
+  }
+  .stat strong{display:block;font-size:28px;letter-spacing:-.04em}
+  .stat span{display:block;margin-top:7px;color:var(--muted);font-size:14px}
+
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin:26px 0}
+  .filter{padding:9px 13px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--muted)}
+  .filter.active,.filter:hover{background:var(--text);color:#071009}
+
+  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px}
+  .project{
+    grid-column:span 6;border:1px solid var(--line);background:var(--panel);
+    border-radius:var(--radius);overflow:hidden;transition:.25s ease;position:relative;
+  }
+  .project:hover{transform:translateY(-4px);border-color:rgba(66,245,129,.32)}
+  .project-media{
+    aspect-ratio:16/10;background:#060807;overflow:hidden;
+    display:grid;place-items:center;color:#647069;position:relative;
+  }
+  .project-media img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s var(--ease)}
+  .project-media video{width:100%;height:100%;object-fit:cover;display:block;background:#000;cursor:pointer}
+  .project-media iframe{width:100%;height:100%;border:none;display:block}
+
+  .video-badge{
+    position:absolute;top:12px;left:12px;z-index:4;
+    background:rgba(5,7,6,.82);backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,.14);color:var(--text);
+    font-size:11px;font-weight:650;padding:4px 9px;border-radius:999px;
+    display:flex;align-items:center;gap:5px;pointer-events:none;
+  }
+  .video-badge svg{fill:var(--green);color:var(--green)}
+
+  .video-controls-overlay{
+    position:absolute;bottom:12px;right:12px;z-index:4;
+    display:flex;gap:6px;opacity:0;transform:translateY(4px);
+    transition:opacity .25s ease,transform .25s ease;
+  }
+  .project:hover .video-controls-overlay{
+    opacity:1;transform:translateY(0);
+  }
+  .video-action-btn{
+    width:32px;height:32px;border-radius:50%;
+    border:1px solid rgba(255,255,255,.18);background:rgba(10,14,11,.90);
+    backdrop-filter:blur(12px);color:var(--text);display:grid;place-items:center;
+    cursor:pointer;padding:0;transition:background .2s ease,transform .2s ease,border-color .2s ease,color .2s ease;
+  }
+  .video-action-btn:hover{
+    background:var(--green);color:#050706;border-color:transparent;transform:scale(1.08);
+  }
+
+  .project-content{padding:22px}
+  .project-top{display:flex;justify-content:space-between;gap:12px;align-items:start}
+  .project h3{margin:0;font-size:24px;letter-spacing:-.035em}
+  .project p{color:var(--muted);line-height:1.55;margin:10px 0 18px}
+  .tag{display:inline-block;font-size:12px;color:#b7c2bb;border:1px solid var(--line);padding:6px 9px;border-radius:999px}
+  .project-link{color:var(--green);text-decoration:none;font-size:14px}
+  
+  .edit-project{display:none;margin-top:16px;gap:8px}
+  body.is-owner.editing .edit-project{display:flex}
+
+  .contact{
+    border:1px solid var(--line);background:
+      radial-gradient(circle at 80% 0%,rgba(66,245,129,.16),transparent 23rem),
+      var(--panel);
+    border-radius:34px;padding:clamp(34px,6vw,70px);
+  }
+  .contact h2{max-width:720px}
+  .contact p{color:var(--muted);max-width:650px;line-height:1.7}
+  
+  footer{padding:40px 0 55px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;gap:20px;align-items:center}
+  .footer-left{display:flex;align-items:center;gap:10px}
+  .owner-lock-btn{
+    background:transparent;border:none;color:var(--muted);opacity:.35;cursor:pointer;
+    padding:4px 6px;border-radius:6px;display:inline-flex;align-items:center;gap:4px;font-size:12px;
+    transition:opacity .25s ease,color .25s ease;
+  }
+  .owner-lock-btn:hover{opacity:1;color:var(--green)}
+  body.is-owner .owner-lock-btn{display:none}
+
+  .adminbar{
+    display:none;position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
+    z-index:50;max-width:calc(100% - 24px);padding:8px 12px;
+    background:rgba(10,14,11,.96);border:1px solid var(--line);border-radius:999px;
+    box-shadow:0 15px 50px rgba(0,0,0,.65);backdrop-filter:blur(20px);
+    gap:8px;align-items:center;white-space:nowrap;overflow-x:auto;
+  }
+  body.is-owner.editing .adminbar{display:flex}
+  .adminbar .btn{padding:8px 13px;font-size:12px}
+  .admin-badge{
+    font-size:11px;font-weight:750;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--green);padding:0 8px;border-right:1px solid var(--line);margin-right:2px;
+  }
+
+  dialog{
+    width:min(680px,calc(100% - 30px));border:none;padding:0;border-radius:28px;
+    background:#0a0d0b;color:white;box-shadow:0 30px 120px rgba(0,0,0,.7);
+  }
+  dialog::backdrop{background:rgba(0,0,0,.72);backdrop-filter:blur(8px)}
+  .modal{padding:28px}
+  .modal h3{margin:0 0 16px;font-size:26px;letter-spacing:-.02em}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+  .full{grid-column:1/-1}
+  label{display:grid;gap:7px;color:#b8c2bc;font-size:13px}
+  input,textarea,select{
+    border:1px solid var(--line);background:#070908;color:white;border-radius:14px;padding:12px 13px;outline:none;
+  }
+  input:focus,textarea:focus,select:focus{border-color:rgba(66,245,129,.55)}
+  textarea{resize:vertical;min-height:110px}
+  .modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:20px}
+  .small{font-size:12px;color:var(--muted);line-height:1.5}
+  .hidden{display:none!important}
+  .empty{
+    grid-column:1/-1;border:1px dashed var(--line);border-radius:var(--radius);
+    padding:50px;text-align:center;color:var(--muted)
+  }
+
+  /* Host Guide Box */
+  .guide-step{
+    border:1px solid var(--line);background:rgba(255,255,255,.03);border-radius:16px;padding:14px 16px;margin-bottom:12px;
+  }
+  .guide-step b{color:var(--green);display:block;margin-bottom:4px}
+  .guide-step code{background:rgba(255,255,255,.08);padding:2px 6px;border-radius:4px;font-size:12px}
+
+  #toast{
+    position:fixed;left:50%;bottom:92px;z-index:100;transform:translate(-50%,16px);
+    padding:11px 18px;border:1px solid rgba(255,255,255,.12);border-radius:999px;
+    background:rgba(14,18,15,.94);backdrop-filter:blur(18px);
+    color:#f4f7f5;font-size:13px;box-shadow:0 15px 50px rgba(0,0,0,.45);
+    opacity:0;pointer-events:none;transition:opacity .3s var(--ease),transform .3s var(--ease);
+  }
+  #toast.show{opacity:1;transform:translate(-50%,0)}
+
+  /* Apple-inspired motion system */
+  @keyframes fadeUp{
+    from{opacity:0;transform:translateY(28px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+  @keyframes float{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-10px)}
+  }
+  @keyframes glow{
+    0%,100%{opacity:.45;transform:scale(.96)}
+    50%{opacity:.85;transform:scale(1.04)}
+  }
+
+  nav{transition:background .35s ease,border-color .35s ease}
+  .brand{transition:transform .3s var(--ease)}
+  .brand:hover{transform:translateX(2px)}
+  .mark{animation:glow 3s ease-in-out infinite}
+  .hero > div:first-child{animation:fadeUp .9s var(--ease) both}
+  .portrait-wrap{animation:fadeUp 1s .12s var(--ease) both}
+  .portrait-card{animation:float 7s ease-in-out 1.1s infinite}
+  .hero-cta .btn{transition:transform .35s var(--ease),box-shadow .35s ease,background .35s ease}
+  .btn.primary:hover{box-shadow:0 10px 35px rgba(70,245,138,.20)}
+  section{animation:fadeUp .9s var(--ease) both}
+  .project{transition:transform .5s var(--ease),border-color .4s ease,box-shadow .5s var(--ease)}
+  .project:hover{box-shadow:0 22px 65px rgba(0,0,0,.28)}
+  .project-media img,.project-media video{transition:transform .7s var(--ease),filter .5s ease}
+  .project:hover .project-media img,.project:hover .project-media video{transform:scale(1.035)}
+  .filter{transition:background .3s var(--ease),color .3s var(--ease),transform .3s var(--ease)}
+  .filter:hover{transform:translateY(-2px)}
+  .contact{overflow:hidden;position:relative}
+  .contact::before{
+    content:"";position:absolute;width:360px;height:360px;right:-180px;top:-180px;
+    background:radial-gradient(circle,rgba(70,245,138,.14),transparent 65%);
+    animation:glow 5s ease-in-out infinite;pointer-events:none;
+  }
+  dialog[open]{animation:modalIn .4s var(--ease) both}
+  @keyframes modalIn{
+    from{opacity:0;transform:translateY(20px) scale(.97)}
+    to{opacity:1;transform:translateY(0) scale(1)}
+  }
+  input:focus,textarea:focus,select:focus{
+    box-shadow:0 0 0 4px rgba(70,245,138,.08);
+    transition:box-shadow .25s ease,border-color .25s ease;
+  }
+  .project-content h3{font-weight:650}
+  h1,h2,h3{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Arial,sans-serif}
+  @media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
+  }
+
+  @media(max-width:800px){
+    .nav-links{display:none}.hero{grid-template-columns:1fr;padding-top:55px}.portrait-wrap{justify-content:start}
+    .portrait-card{width:300px}.section-head{display:block}.section-note{margin-top:14px}
+    .project{grid-column:1/-1}.stats{grid-template-columns:1fr}
+    footer{display:flex;flex-direction:column;align-items:start;gap:12px}.form-grid{grid-template-columns:1fr}.full{grid-column:auto}
+    .adminbar{overflow-x:auto;justify-content:start}
+  }
+</style>
+</head>
+<body>
+<!-- Interactive Scroll-Driven Background Gradients -->
+<div class="ambient-bg" aria-hidden="true">
+  <div class="ambient-orb orb-1"></div>
+  <div class="ambient-orb orb-2"></div>
+  <div class="ambient-orb orb-3"></div>
+  <div class="ambient-grid"></div>
+</div>
+<nav>
+  <div class="shell nav-inner">
+    <div class="brand" title="Double click for owner access"><span class="mark"></span><span id="navName">Safin Riyasat</span></div>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#work">Work</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="actions">
+      <!-- Owner-only controls (hidden from public visitors) -->
+      <button class="btn owner-only" id="editToggle">Edit portfolio</button>
+      <button class="btn danger owner-only" id="navLogoutBtn" title="Lock and exit owner mode">Log out</button>
+    </div>
+  </div>
+</nav>
+
+<main class="shell">
+  <section class="hero" id="about">
+    <div>
+      <div class="eyebrow"><i></i><span id="availability">Available for selected projects</span></div>
+      <h1><span id="headline1">Designing</span><br><span class="accent" id="headline2">visual impact.</span></h1>
+      <p class="lead" id="bio">Multimedia specialist working across motion design, visual systems, digital experiences and creative technology.</p>
+      <div class="hero-cta">
+        <a class="btn primary" href="#work">View selected work</a>
+        <a class="btn" id="emailBtn" href="https://www.facebook.com/arjo.3919/" target="_blank" rel="noreferrer">Get in touch</a>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><strong id="stat1Value">2021</strong><span id="stat1Label">Creating since</span></div>
+        <div class="stat"><strong id="stat2Value">04+</strong><span id="stat2Label">Creative disciplines</span></div>
+        <div class="stat"><strong id="stat3Value">∞</strong><span id="stat3Label">Ideas in progress</span></div>
+      </div>
+    </div>
+
+    <div class="portrait-wrap">
+      <div class="portrait-card">
+        <img id="profileImage" alt="Profile portrait" />
+        <div class="portrait-placeholder" id="portraitPlaceholder">
+          <div><b>Your portrait</b>Use Edit Mode to add your profile picture.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="section-head">
+      <div>
+        <div class="kicker">Selected work</div>
+        <h2>Projects that speak<br>before I do.</h2>
+      </div>
+      <div class="section-note">A living collection of motion, design, digital and experimental work. New projects can be added anytime.</div>
+    </div>
+    <div class="filters" id="filters"></div>
+    <div class="grid" id="projectGrid"></div>
+  </section>
+
+  <section id="contact">
+    <div class="contact">
+      <div class="kicker">Contact</div>
+      <h2 id="contactTitle">Have an idea worth building?</h2>
+      <p id="contactText">I’m open to creative collaborations, freelance work, brand projects and digital experiences.</p>
+      <div class="hero-cta">
+        <a class="btn primary" id="contactEmail" href="https://mail.google.com/mail/?view=cm&fs=1&to=riyasatsafin@gmail.com" target="_blank" rel="noreferrer">Email me</a>
+        <a class="btn" id="contactLinkedIn" href="https://www.linkedin.com/in/safin-riyasat-65814337b" target="_blank" rel="noreferrer">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="shell">
+  <div class="footer-left">
+    <span>© <span id="year"></span> <span id="footerName">Safin Riyasat</span>.</span>
+    <!-- Discreet lock entry point for owner -->
+    <button class="owner-lock-btn" id="ownerLoginBtn" title="Owner Access" aria-label="Owner Access">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+      <span>Owner</span>
+    </button>
+  </div>
+  <span>Designed to evolve.</span>
+</footer>
+
+<!-- Floating Admin Bar (Visible ONLY to Owner when Editing) -->
+<div class="adminbar" id="adminBar">
+  <span class="admin-badge">Owner</span>
+  <button class="btn" id="editProfileBtn">Profile</button>
+  <button class="btn" id="addProjectBtn">+ Project</button>
+  <button class="btn primary" id="publishHtmlBtn" title="Download updated index.html with all your changes for hosting">🚀 Publish Live HTML</button>
+  <button class="btn" id="changePasscodeBtn">Passcode</button>
+  <button class="btn" id="hostingGuideBtn">Hosting Help</button>
+  <button class="btn" id="exportBtn" title="Backup data to JSON">JSON Backup</button>
+  <label class="btn" style="display:inline-flex;align-items:center" title="Restore from JSON backup">JSON Restore<input id="importInput" type="file" accept=".json" hidden></label>
+  <button class="btn danger" id="resetBtn">Reset</button>
+  <button class="btn" id="exitEditBtn">Done</button>
+</div>
+
+<!-- Owner Login Dialog -->
+<dialog id="loginDialog">
+  <form class="modal" id="loginForm" method="dialog">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+      <div style="width:36px;height:36px;border-radius:50%;background:rgba(70,245,138,.12);display:grid;place-items:center;color:var(--green)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+      </div>
+      <h3 style="margin:0">Owner Access</h3>
+    </div>
+    <p class="small" style="margin-top:0;margin-bottom:18px">Enter your owner passcode to unlock editing and site management tools.</p>
+    
+    <label>Owner Passcode
+      <input id="loginPassInput" type="password" placeholder="Enter passcode" autocomplete="current-password" required autofocus>
+    </label>
+    <div style="display:flex;align-items:center;gap:8px;margin-top:10px">
+      <input type="checkbox" id="rememberMeCheckbox" checked style="accent-color:var(--green);width:16px;height:16px;cursor:pointer">
+      <label for="rememberMeCheckbox" style="margin:0;cursor:pointer;font-size:12px;color:var(--muted)">Remember this browser</label>
+    </div>
+    <p id="loginErrorMsg" style="color:var(--danger);font-size:12px;margin:10px 0 0;display:none">Incorrect passcode. Try again.</p>
+    
+    <div class="modal-actions" style="margin-top:20px">
+      <button class="btn" type="button" onclick="loginDialog.close()">Cancel</button>
+      <button class="btn primary" type="submit" id="loginSubmitBtn">Unlock</button>
+    </div>
+    <p class="small" style="margin-top:16px;border-top:1px solid var(--line);padding-top:12px;opacity:.7">Owner authorized access only.</p>
+  </form>
+</dialog>
+
+<!-- Change Passcode Dialog -->
+<dialog id="changePasscodeDialog">
+  <form class="modal" id="changePasscodeForm" method="dialog">
+    <h3>Change Owner Passcode</h3>
+    <p class="small" style="margin-top:0;margin-bottom:18px">Update your secret passcode. When you export your live HTML, this passcode will be preserved.</p>
+    
+    <div class="form-grid" style="grid-template-columns:1fr">
+      <label>Current Passcode<input id="currentPassInput" type="password" required></label>
+      <label>New Passcode (min 4 characters)<input id="newPassInput" type="password" minlength="4" required></label>
+      <label>Confirm New Passcode<input id="confirmPassInput" type="password" minlength="4" required></label>
+    </div>
+    <p id="passcodeErrorMsg" style="color:var(--danger);font-size:12px;margin:10px 0 0;display:none"></p>
+    
+    <div class="modal-actions">
+      <button class="btn" type="button" onclick="changePasscodeDialog.close()">Cancel</button>
+      <button class="btn primary" type="submit">Save Passcode</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Hosting Help Dialog -->
+<dialog id="hostingGuideDialog">
+  <div class="modal">
+    <h3>How to Host Your Portfolio</h3>
+    <p class="small" style="margin-top:0;margin-bottom:18px">Because this is a high-performance static site, public visitors see whatever is saved in your <code>index.html</code> file. Follow these simple steps:</p>
+    
+    <div class="guide-step">
+      <b>Step 1: Make your edits</b>
+      <span class="small">Click "Edit portfolio" in the navbar, update your profile info, portrait picture, or add projects.</span>
+    </div>
+    
+    <div class="guide-step">
+      <b>Step 2: Click "Publish Live HTML"</b>
+      <span class="small">This downloads an updated <code>index.html</code> file with all your changes and projects embedded permanently.</span>
+    </div>
+
+    <div class="guide-step">
+      <b>Step 3: Upload to free hosting</b>
+      <span class="small">
+        • <b>GitHub Pages</b>: Push or upload <code>index.html</code> to your GitHub repo, go to <i>Settings &gt; Pages</i> and choose <i>Deploy from branch</i>.<br>
+        • <b>Netlify</b>: Drag and drop the folder with <code>index.html</code> into <a href="https://app.netlify.com/drop" target="_blank" style="color:var(--green)">netlify.com/drop</a>.<br>
+        • <b>Vercel</b>: Connect your GitHub repo for automatic continuous deploys.
+      </span>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn primary" onclick="hostingGuideDialog.close()">Got it</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- Profile Dialog -->
+<dialog id="profileDialog">
+  <form class="modal" id="profileForm" method="dialog">
+    <h3>Edit portfolio</h3>
+    <div class="form-grid">
+      <label>Name<input id="fName"></label>
+      <label>Email<input id="fEmail" type="email"></label>
+      <label class="full">Availability<input id="fAvailability"></label>
+      <label>Headline line 1<input id="fHeadline1"></label>
+      <label>Headline line 2<input id="fHeadline2"></label>
+      <label class="full">Bio<textarea id="fBio"></textarea></label>
+      <label>LinkedIn / social URL<input id="fLinkedIn" placeholder="https://..."></label>
+      <label>Facebook URL<input id="fFacebook" placeholder="https://facebook.com/..."></label>
+      <label>Profile photo<input id="fProfile" type="file" accept="image/*"></label>
+      <label>Stat 1 value<input id="fStat1Value"></label>
+      <label>Stat 1 label<input id="fStat1Label"></label>
+      <label>Stat 2 value<input id="fStat2Value"></label>
+      <label>Stat 2 label<input id="fStat2Label"></label>
+      <label>Stat 3 value<input id="fStat3Value"></label>
+      <label>Stat 3 label<input id="fStat3Label"></label>
+      <label class="full">Contact heading<input id="fContactTitle"></label>
+      <label class="full">Contact text<textarea id="fContactText"></textarea></label>
+    </div>
+    <p class="small" style="margin-top:14px">Your edits are saved immediately in your browser. When you want visitors to see your changes, click <b>Publish Live HTML</b> in the bottom bar.</p>
+    <div class="modal-actions">
+      <button class="btn" type="button" onclick="profileDialog.close()">Cancel</button>
+      <button class="btn primary" id="saveProfile" value="default">Save</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Project Dialog -->
+<dialog id="projectDialog">
+  <form class="modal" id="projectForm" method="dialog">
+    <h3 id="projectDialogTitle">Add project</h3>
+    <input type="hidden" id="projectId">
+    <div class="form-grid">
+      <label>Project title<input id="pTitle" placeholder="e.g. Kinetic Brand Identity" required></label>
+      <label>Category<input id="pCategory" placeholder="e.g. Motion Design" required></label>
+      <label class="full">Description<textarea id="pDescription" placeholder="Project overview, creative direction, motion tools used..."></textarea></label>
+      <label>Project link (optional)<input id="pLink" placeholder="https://..."></label>
+      <label>Media type
+        <select id="pMediaType">
+          <option value="image">Image (JPG, PNG, WebP, GIF)</option>
+          <option value="video">Video (MP4, WebM, MOV, YouTube, Vimeo)</option>
+        </select>
+      </label>
+      <label class="full">
+        Upload video or image
+        <input id="pMediaFile" type="file" accept="image/*,video/mp4,video/webm,video/ogg,video/quicktime,video/*">
+      </label>
+      <label class="full">
+        Or media URL / local video file name
+        <input id="pMediaUrl" placeholder="e.g. showreel.mp4, or https://... or YouTube/Vimeo link">
+      </label>
+      
+      <!-- Live Media Preview -->
+      <div class="full" id="mediaPreviewWrapper" style="display:none;padding:12px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.025)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <span style="font-size:12px;font-weight:600;color:var(--green)">Media Preview</span>
+          <span id="mediaTypeBadge" class="tag" style="font-size:11px">Auto-detected</span>
+        </div>
+        <div id="mediaPreviewBox" style="aspect-ratio:16/9;max-height:220px;border-radius:12px;overflow:hidden;background:#050706;display:grid;place-items:center;border:1px solid var(--line)"></div>
+      </div>
+    </div>
+
+    <p class="small" style="margin-top:14px;color:var(--muted)">
+      <b>💡 Pro tips for video projects:</b><br>
+      • <b>Video File</b>: Select any <code>.mp4</code> or <code>.webm</code> file directly from your computer.<br>
+      • <b>Local file name</b>: For large videos, place the file in your website folder (e.g. <code>reel.mp4</code>) and type <code>reel.mp4</code> in the Media URL field for lightning-fast loading.<br>
+      • <b>YouTube / Vimeo</b>: Paste any YouTube (<code>youtu.be/...</code>) or Vimeo link to embed it automatically.
+    </p>
+    <div class="modal-actions">
+      <button class="btn" type="button" onclick="projectDialog.close()">Cancel</button>
+      <button class="btn primary" id="saveProject" value="default">Save project</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Full-Screen Video Theater Lightbox -->
+<dialog id="videoTheaterDialog">
+  <div class="modal" style="max-width:980px;padding:22px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <div>
+        <span class="kicker" style="margin-bottom:4px;display:block">Project Video</span>
+        <h3 id="theaterTitle" style="margin:0;font-size:22px">Video Showcase</h3>
+      </div>
+      <button class="btn" type="button" onclick="closeTheater()">Close ✕</button>
+    </div>
+    <div id="theaterPlayerBox" style="position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:20px;overflow:hidden;border:1px solid var(--line);box-shadow:0 25px 80px rgba(0,0,0,.7)">
+      <!-- Dynamic Video/Embed Element -->
+    </div>
+    <p id="theaterDesc" class="small" style="margin-top:14px;margin-bottom:0;color:var(--muted);line-height:1.6"></p>
+  </div>
+</dialog>
+
+<div id="toast" aria-live="polite"></div>
+
+<script>
+// =================================================================
+// 1. CONFIGURATION & STATE
+// =================================================================
+const STORAGE_KEY = 'greenPortfolioData_v1';
+const AUTH_KEY = 'greenPortfolio_ownerAuth';
+const PASS_KEY = 'greenPortfolio_passHash';
+
+/* INITIAL_CONFIG_START */
+// SHA-256 hash for owner passcode
+const DEFAULT_PASS_HASH = '653beba9dc79758ba99ad7594116ffd51c08b24ac867ac00b48e06471d6de949';
+
+const defaults = {
+  profile: {
+    name: "Safin Riyasat",
+    email: "riyasatsafin@gmail.com",
+    facebook: "https://www.facebook.com/arjo.3919/",
+    availability: "Available for selected projects",
+    headline1: "Designing",
+    headline2: "visual impact.",
+    bio: "Multimedia specialist working across motion design, visual systems, digital experiences and creative technology.",
+    linkedIn: "https://www.linkedin.com/in/safin-riyasat-65814337b",
+    profileImage: "",
+    stat1Value: "2021",
+    stat1Label: "Creating since",
+    stat2Value: "04+",
+    stat2Label: "Creative disciplines",
+    stat3Value: "∞",
+    stat3Label: "Ideas in progress",
+    contactTitle: "Have an idea worth building?",
+    contactText: "I’m open to creative collaborations, freelance work, brand projects and digital experiences."
+  },
+  projects: [
+    {
+      id: crypto.randomUUID(),
+      title: "Motion Identity",
+      category: "Motion Design",
+      description: "A clean motion system built around rhythm, typography and deliberate movement.",
+      link: "#",
+      mediaType: "video",
+      media: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
+    },
+    {
+      id: crypto.randomUUID(),
+      title: "Digital Campaign",
+      category: "Visual Design",
+      description: "Minimal visual direction with high-contrast layouts and a focused campaign language.",
+      link: "#",
+      mediaType: "image",
+      media: ""
+    },
+    {
+      id: crypto.randomUUID(),
+      title: "Creative Interface",
+      category: "Digital",
+      description: "An interface study combining product thinking, motion and a restrained visual system.",
+      link: "#",
+      mediaType: "image",
+      media: ""
+    },
+    {
+      id: crypto.randomUUID(),
+      title: "Experimental Frame",
+      category: "Experimental",
+      description: "A playground for new visual approaches, compositing and motion experiments.",
+      link: "#",
+      mediaType: "image",
+      media: ""
+    }
+  ]
+};
+/* INITIAL_CONFIG_END */
+
+let data = load();
+let activeFilter = 'All';
+let isOwner = false;
+
+// =================================================================
+// 2. CRYPTOGRAPHY & AUTHENTICATION
+// =================================================================
+async function sha256(str) {
+  const enc = new TextEncoder().encode(str);
+  const buf = await crypto.subtle.digest('SHA-256', enc);
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function getStoredPassHash() {
+  const stored = localStorage.getItem(PASS_KEY);
+  if (stored === '6051fc84a7a0d74c225fb18a496b09952da5642e60723ecae543298edd7d82d6') {
+    localStorage.removeItem(PASS_KEY);
+    return DEFAULT_PASS_HASH;
+  }
+  return stored || DEFAULT_PASS_HASH;
+}
+
+function initAuth() {
+  // Check if owner was previously authenticated on this browser
+  const storedAuth = localStorage.getItem(AUTH_KEY) || sessionStorage.getItem(AUTH_KEY);
+  if (storedAuth === 'true') {
+    setOwnerState(true);
+  } else {
+    setOwnerState(false);
+  }
+
+  // Check URL triggers: e.g. index.html?admin or ?edit
+  const params = new URLSearchParams(window.location.search);
+  if (params.has('admin') || params.has('edit')) {
+    if (!isOwner) {
+      openLoginModal();
+    } else {
+      setEditMode(true);
+    }
+    // Clean up URL so ?admin is not left exposed
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
+}
+
+function setOwnerState(status) {
+  isOwner = status;
+  if (isOwner) {
+    document.body.classList.add('is-owner');
+  } else {
+    document.body.classList.remove('is-owner', 'editing');
+    if (editToggle) editToggle.textContent = 'Edit portfolio';
+  }
+  renderProjects();
+}
+
+function openLoginModal() {
+  loginPassInput.value = '';
+  loginErrorMsg.style.display = 'none';
+  loginDialog.showModal();
+}
+
+loginForm.onsubmit = async (e) => {
+  e.preventDefault();
+  const input = loginPassInput.value;
+  const hash = await sha256(input);
+  const targetHash = getStoredPassHash();
+
+  if (hash === targetHash) {
+    loginDialog.close();
+    const remember = rememberMeCheckbox.checked;
+    if (remember) {
+      localStorage.setItem(AUTH_KEY, 'true');
+    } else {
+      sessionStorage.setItem(AUTH_KEY, 'true');
+    }
+    setOwnerState(true);
+    setEditMode(true);
+    showToast('Welcome back, Safin! Edit mode active.');
+  } else {
+    loginErrorMsg.style.display = 'block';
+    loginPassInput.focus();
+  }
+};
+
+function logout() {
+  localStorage.removeItem(AUTH_KEY);
+  sessionStorage.removeItem(AUTH_KEY);
+  setOwnerState(false);
+  showToast('Logged out. Public preview active.');
+}
+
+navLogoutBtn.onclick = logout;
+ownerLoginBtn.onclick = openLoginModal;
+
+// Keyboard shortcut: Ctrl+Shift+E or Cmd+Shift+E
+window.addEventListener('keydown', (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'E' || e.key === 'e')) {
+    e.preventDefault();
+    if (!isOwner) openLoginModal();
+    else toggleEditMode();
+  }
+});
+
+// Double click brand to unlock
+document.querySelector('.brand').ondblclick = () => {
+  if (!isOwner) openLoginModal();
+  else toggleEditMode();
+};
+
+// =================================================================
+// 3. EDIT MODE CONTROLS
+// =================================================================
+function setEditMode(enable) {
+  if (!isOwner && enable) {
+    openLoginModal();
+    return;
+  }
+  if (enable) {
+    document.body.classList.add('editing');
+    editToggle.textContent = 'Done editing';
+  } else {
+    document.body.classList.remove('editing');
+    editToggle.textContent = 'Edit portfolio';
+  }
+  renderProjects();
+}
+
+function toggleEditMode() {
+  if (!isOwner) {
+    openLoginModal();
+    return;
+  }
+  setEditMode(!document.body.classList.contains('editing'));
+}
+
+editToggle.onclick = toggleEditMode;
+exitEditBtn.onclick = () => setEditMode(false);
+
+// Change Passcode
+changePasscodeBtn.onclick = () => {
+  if (!isOwner) return;
+  currentPassInput.value = '';
+  newPassInput.value = '';
+  confirmPassInput.value = '';
+  passcodeErrorMsg.style.display = 'none';
+  changePasscodeDialog.showModal();
+};
+
+changePasscodeForm.onsubmit = async (e) => {
+  e.preventDefault();
+  const curr = currentPassInput.value;
+  const n1 = newPassInput.value;
+  const n2 = confirmPassInput.value;
+
+  const currHash = await sha256(curr);
+  if (currHash !== getStoredPassHash()) {
+    passcodeErrorMsg.textContent = 'Current passcode is incorrect.';
+    passcodeErrorMsg.style.display = 'block';
+    return;
+  }
+  if (n1.length < 4) {
+    passcodeErrorMsg.textContent = 'New passcode must be at least 4 characters.';
+    passcodeErrorMsg.style.display = 'block';
+    return;
+  }
+  if (n1 !== n2) {
+    passcodeErrorMsg.textContent = 'New passcodes do not match.';
+    passcodeErrorMsg.style.display = 'block';
+    return;
+  }
+
+  const newHash = await sha256(n1);
+  localStorage.setItem(PASS_KEY, newHash);
+  changePasscodeDialog.close();
+  showToast('Owner passcode updated successfully!');
+};
+
+hostingGuideBtn.onclick = () => hostingGuideDialog.showModal();
+
+// =================================================================
+// 4. DATA PERSISTENCE & RENDERING
+// =================================================================
+function load() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    const parsed = saved ? JSON.parse(saved) : structuredClone(defaults);
+    if (!parsed.profile.linkedIn || parsed.profile.linkedIn === '#') {
+      parsed.profile.linkedIn = defaults.profile.linkedIn;
+    }
+    if (!parsed.profile.facebook) {
+      parsed.profile.facebook = defaults.profile.facebook;
+    }
+    if (!parsed.profile.email || parsed.profile.email === 'hello@example.com') {
+      parsed.profile.email = defaults.profile.email;
+    }
+    return parsed;
+  } catch (e) {
+    return structuredClone(defaults);
+  }
+}
+
+function persist() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  } catch (e) {
+    console.warn('Storage quota exceeded:', e);
+    showToast('⚠️ Storage limit reached. Use "Publish Live HTML" to save large media.');
+  }
+}
+
+let toastTimer;
+function showToast(message) {
+  const toast = document.getElementById('toast');
+  if (!toast) return;
+  toast.textContent = message;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 2600);
+}
+
+function escapeHTML(s = '') {
+  return s.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
+}
+
+function safeUrl(url) {
+  if (!url || url === '#') return '#';
+  let target = url.trim();
+  if (target.startsWith('www.')) target = 'https://' + target;
+  if (!/^[a-zA-Z][a-zA-Z\d+\-.]*:/.test(target)) {
+    if (/^[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+/.test(target)) {
+      target = 'https://' + target;
+    }
+  }
+  try {
+    const u = new URL(target, location.href);
+    return ['http:', 'https:', 'mailto:'].includes(u.protocol) ? u.href : '#';
+  } catch {
+    return '#';
+  }
+}
+
+function fileToDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result);
+    r.onerror = reject;
+    r.readAsDataURL(file);
+  });
+}
+
+function render() {
+  const p = data.profile;
+  navName.textContent = p.name;
+  footerName.textContent = p.name;
+  availability.textContent = p.availability;
+  headline1.textContent = p.headline1;
+  headline2.textContent = p.headline2;
+  bio.textContent = p.bio;
+  stat1Value.textContent = p.stat1Value;
+  stat1Label.textContent = p.stat1Label;
+  stat2Value.textContent = p.stat2Value;
+  stat2Label.textContent = p.stat2Label;
+  stat3Value.textContent = p.stat3Value;
+  stat3Label.textContent = p.stat3Label;
+  contactTitle.textContent = p.contactTitle;
+  // "Get in touch" -> Facebook profile
+  const fbUrl = p.facebook || 'https://www.facebook.com/arjo.3919/';
+  emailBtn.href = safeUrl(fbUrl);
+  emailBtn.target = '_blank';
+  emailBtn.rel = 'noreferrer';
+
+  // "Email me" -> Gmail compose window
+  const targetEmail = p.email || 'riyasatsafin@gmail.com';
+  contactEmail.href = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(targetEmail)}`;
+  contactEmail.target = '_blank';
+  contactEmail.rel = 'noreferrer';
+
+  contactLinkedIn.href = safeUrl(p.linkedIn);
+
+  if (p.profileImage) {
+    profileImage.src = p.profileImage;
+    profileImage.style.display = 'block';
+    portraitPlaceholder.style.display = 'none';
+  } else {
+    profileImage.style.display = 'none';
+    portraitPlaceholder.style.display = 'grid';
+  }
+
+  renderFilters();
+  renderProjects();
+}
+
+function renderFilters() {
+  const cats = ['All', ...new Set(data.projects.map(x => x.category).filter(Boolean))];
+  filters.innerHTML = cats.map(c => `<button class="filter ${c === activeFilter ? 'active' : ''}" data-filter="${escapeHTML(c)}">${escapeHTML(c)}</button>`).join('');
+  [...filters.querySelectorAll('.filter')].forEach(btn => btn.onclick = () => {
+    activeFilter = btn.dataset.filter;
+    renderFilters();
+    renderProjects();
+  });
+}
+
+// =================================================================
+// 4.1 VIDEO UTILITIES & THEATER MODAL
+// =================================================================
+function parseVideoSource(url) {
+  if (!url) return { type: 'none', src: '' };
+  
+  // YouTube match
+  const ytMatch = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/i);
+  if (ytMatch) {
+    return {
+      type: 'youtube',
+      src: `https://www.youtube-nocookie.com/embed/${ytMatch[1]}?autoplay=1&mute=1&loop=1&playlist=${ytMatch[1]}&controls=1&modestbranding=1`
+    };
+  }
+  
+  // Vimeo match
+  const vimeoMatch = url.match(/vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)/i);
+  if (vimeoMatch) {
+    return {
+      type: 'vimeo',
+      src: `https://player.vimeo.com/video/${vimeoMatch[3]}?autoplay=1&muted=1&loop=1&background=1`
+    };
+  }
+  
+  return { type: 'html5', src: url };
+}
+
+window.toggleVideoSound = (e, btn) => {
+  e.stopPropagation();
+  const container = btn.closest('.project-media');
+  const video = container.querySelector('video');
+  if (!video) return;
+  video.muted = !video.muted;
+  const iconMute = btn.querySelector('.icon-mute');
+  const iconSound = btn.querySelector('.icon-sound');
+  if (video.muted) {
+    iconMute.style.display = 'block';
+    iconSound.style.display = 'none';
+    btn.title = 'Unmute sound';
+  } else {
+    iconMute.style.display = 'none';
+    iconSound.style.display = 'block';
+    btn.title = 'Mute sound';
+  }
+};
+
+window.openTheater = (id) => {
+  const p = data.projects.find(x => x.id === id);
+  if (!p || !p.media) return;
+  theaterTitle.textContent = p.title;
+  theaterDesc.textContent = p.description || '';
+  
+  const parsed = parseVideoSource(p.media);
+  if (parsed.type === 'youtube' || parsed.type === 'vimeo') {
+    theaterPlayerBox.innerHTML = `<iframe src="${escapeHTML(parsed.src)}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="width:100%;height:100%;border:none"></iframe>`;
+  } else {
+    theaterPlayerBox.innerHTML = `<video src="${escapeHTML(p.media)}" controls autoplay playsinline style="width:100%;height:100%;object-fit:contain;background:#000"></video>`;
+  }
+  videoTheaterDialog.showModal();
+};
+
+window.closeTheater = () => {
+  theaterPlayerBox.innerHTML = '';
+  videoTheaterDialog.close();
+};
+
+videoTheaterDialog.addEventListener('close', () => {
+  theaterPlayerBox.innerHTML = '';
+});
+
+function updateMediaPreview() {
+  const file = pMediaFile.files[0];
+  const url = pMediaUrl.value.trim();
+  
+  if (file) {
+    mediaPreviewWrapper.style.display = 'block';
+    const isVideo = file.type.startsWith('video/');
+    if (isVideo) {
+      pMediaType.value = 'video';
+      mediaTypeBadge.textContent = 'Video (' + (file.size / (1024*1024)).toFixed(1) + ' MB)';
+      const objUrl = URL.createObjectURL(file);
+      mediaPreviewBox.innerHTML = `<video src="${objUrl}" controls autoplay muted loop playsinline style="max-height:220px;width:100%;object-fit:contain"></video>`;
+    } else {
+      pMediaType.value = 'image';
+      mediaTypeBadge.textContent = 'Image File';
+      const objUrl = URL.createObjectURL(file);
+      mediaPreviewBox.innerHTML = `<img src="${objUrl}" style="max-height:220px;width:100%;object-fit:contain">`;
+    }
+    return;
+  }
+  
+  if (url) {
+    mediaPreviewWrapper.style.display = 'block';
+    const isVideo = /\.(mp4|webm|mov|ogg|m4v)(\?.*)?$/i.test(url) || /(?:youtube\.com|youtu\.be|vimeo\.com)/i.test(url) || pMediaType.value === 'video';
+    if (isVideo) {
+      pMediaType.value = 'video';
+      mediaTypeBadge.textContent = 'Video Link';
+      const parsed = parseVideoSource(url);
+      if (parsed.type === 'youtube' || parsed.type === 'vimeo') {
+        mediaPreviewBox.innerHTML = `<iframe src="${escapeHTML(parsed.src)}" style="width:100%;height:100%;min-height:180px;border:none"></iframe>`;
+      } else {
+        mediaPreviewBox.innerHTML = `<video src="${escapeHTML(url)}" controls autoplay muted loop playsinline style="max-height:220px;width:100%;object-fit:contain"></video>`;
+      }
+    } else {
+      mediaTypeBadge.textContent = 'Image URL';
+      mediaPreviewBox.innerHTML = `<img src="${escapeHTML(url)}" style="max-height:220px;width:100%;object-fit:contain" onerror="this.parentElement.innerHTML='<div style=\\'color:var(--muted);font-size:12px\\'>Image preview not available</div>'">`;
+    }
+    return;
+  }
+  
+  mediaPreviewWrapper.style.display = 'none';
+  mediaPreviewBox.innerHTML = '';
+}
+
+pMediaFile.onchange = updateMediaPreview;
+pMediaUrl.oninput = updateMediaPreview;
+pMediaType.onchange = () => {
+  if (pMediaUrl.value.trim() || pMediaFile.files[0]) updateMediaPreview();
+};
+
+function renderProjects() {
+  const list = activeFilter === 'All' ? data.projects : data.projects.filter(p => p.category === activeFilter);
+  if (!list.length) {
+    projectGrid.innerHTML = '<div class="empty">No projects in this category yet.</div>';
+    return;
+  }
+  
+  const showEditControls = isOwner && document.body.classList.contains('editing');
+  
+  projectGrid.innerHTML = list.map(p => {
+    let media = '<div>No media yet</div>';
+    if (p.media) {
+      if (p.mediaType === 'video') {
+        const videoInfo = parseVideoSource(p.media);
+        if (videoInfo.type === 'youtube' || videoInfo.type === 'vimeo') {
+          media = `
+            <iframe src="${escapeHTML(videoInfo.src)}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+            <div class="video-badge"><svg width="10" height="10" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg> Video</div>
+            <div class="video-controls-overlay">
+              <button type="button" class="video-action-btn" onclick="openTheater('${p.id}')" title="Watch in theater mode">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+              </button>
+            </div>`;
+        } else {
+          media = `
+            <video src="${escapeHTML(p.media)}" muted loop playsinline autoplay preload="metadata" onclick="openTheater('${p.id}')"></video>
+            <div class="video-badge"><svg width="10" height="10" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg> Video</div>
+            <div class="video-controls-overlay">
+              <button type="button" class="video-action-btn sound-toggle-btn" onclick="toggleVideoSound(event, this)" title="Unmute sound">
+                <svg class="icon-mute" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                <svg class="icon-sound" style="display:none" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+              </button>
+              <button type="button" class="video-action-btn" onclick="openTheater('${p.id}')" title="Watch in theater mode">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+              </button>
+            </div>`;
+        }
+      } else {
+        media = `<img src="${escapeHTML(p.media)}" alt="${escapeHTML(p.title)}" loading="lazy">`;
+      }
+    }
+    
+    // Only render edit buttons into DOM if owner is in editing mode
+    const editActions = showEditControls ? `
+      <div class="edit-project">
+        <button type="button" class="btn" onclick="editProject('${p.id}')">Edit</button>
+        <button type="button" class="btn danger" onclick="deleteProject('${p.id}')">Delete</button>
+      </div>` : '';
+
+    return `<article class="project">
+      <div class="project-media">${media}</div>
+      <div class="project-content">
+        <div class="project-top"><h3>${escapeHTML(p.title)}</h3><span class="tag">${escapeHTML(p.category)}</span></div>
+        <p>${escapeHTML(p.description || '')}</p>
+        ${p.link && p.link !== '#' ? `<a class="project-link" href="${safeUrl(p.link)}" target="_blank" rel="noreferrer">View project ↗</a>` : ''}
+        ${editActions}
+      </div>
+    </article>`;
+  }).join('');
+}
+
+// =================================================================
+// 5. PROFILE & PROJECT MUTATIONS (OWNER GUARDED)
+// =================================================================
+editProfileBtn.onclick = () => {
+  if (!isOwner) return;
+  const p = data.profile;
+  fName.value = p.name;
+  fEmail.value = p.email;
+  fAvailability.value = p.availability;
+  fHeadline1.value = p.headline1;
+  fHeadline2.value = p.headline2;
+  fBio.value = p.bio;
+  fLinkedIn.value = p.linkedIn;
+  fFacebook.value = p.facebook || 'https://www.facebook.com/arjo.3919/';
+  fProfile.value = '';
+  fStat1Value.value = p.stat1Value;
+  fStat1Label.value = p.stat1Label;
+  fStat2Value.value = p.stat2Value;
+  fStat2Label.value = p.stat2Label;
+  fStat3Value.value = p.stat3Value;
+  fStat3Label.value = p.stat3Label;
+  fContactTitle.value = p.contactTitle;
+  fContactText.value = p.contactText;
+  profileDialog.showModal();
+};
+
+saveProfile.onclick = async (e) => {
+  e.preventDefault();
+  if (!isOwner) return;
+  const img = fProfile.files[0];
+  const existing = data.profile.profileImage;
+  data.profile = {
+    name: fName.value.trim(),
+    email: fEmail.value.trim(),
+    availability: fAvailability.value.trim(),
+    headline1: fHeadline1.value.trim(),
+    headline2: fHeadline2.value.trim(),
+    bio: fBio.value.trim(),
+    linkedIn: fLinkedIn.value.trim(),
+    facebook: fFacebook.value.trim(),
+    profileImage: img ? await fileToDataURL(img) : existing,
+    stat1Value: fStat1Value.value.trim(),
+    stat1Label: fStat1Label.value.trim(),
+    stat2Value: fStat2Value.value.trim(),
+    stat2Label: fStat2Label.value.trim(),
+    stat3Value: fStat3Value.value.trim(),
+    stat3Label: fStat3Label.value.trim(),
+    contactTitle: fContactTitle.value.trim(),
+    contactText: fContactText.value.trim()
+  };
+  persist();
+  render();
+  profileDialog.close();
+  showToast('Profile updated!');
+};
+
+addProjectBtn.onclick = () => {
+  if (!isOwner) return;
+  projectId.value = '';
+  projectDialogTitle.textContent = 'Add project';
+  pTitle.value = '';
+  pCategory.value = '';
+  pDescription.value = '';
+  pLink.value = '';
+  pMediaType.value = 'image';
+  pMediaFile.value = '';
+  pMediaUrl.value = '';
+  mediaPreviewWrapper.style.display = 'none';
+  mediaPreviewBox.innerHTML = '';
+  projectDialog.showModal();
+};
+
+window.editProject = (id) => {
+  if (!isOwner) return;
+  const p = data.projects.find(x => x.id === id);
+  if (!p) return;
+  projectId.value = p.id;
+  projectDialogTitle.textContent = 'Edit project';
+  pTitle.value = p.title;
+  pCategory.value = p.category;
+  pDescription.value = p.description || '';
+  pLink.value = p.link || '';
+  pMediaType.value = p.mediaType || 'image';
+  pMediaFile.value = '';
+  pMediaUrl.value = (p.media && !p.media.startsWith('data:')) ? p.media : '';
+  
+  if (p.media) {
+    mediaPreviewWrapper.style.display = 'block';
+    mediaTypeBadge.textContent = p.mediaType === 'video' ? 'Current Video' : 'Current Image';
+    if (p.mediaType === 'video') {
+      const parsed = parseVideoSource(p.media);
+      if (parsed.type === 'youtube' || parsed.type === 'vimeo') {
+        mediaPreviewBox.innerHTML = `<iframe src="${escapeHTML(parsed.src)}" style="width:100%;height:100%;min-height:180px;border:none"></iframe>`;
+      } else {
+        mediaPreviewBox.innerHTML = `<video src="${escapeHTML(p.media)}" controls autoplay muted loop playsinline style="max-height:220px;width:100%;object-fit:contain"></video>`;
+      }
+    } else {
+      mediaPreviewBox.innerHTML = `<img src="${escapeHTML(p.media)}" style="max-height:220px;width:100%;object-fit:contain">`;
+    }
+  } else {
+    mediaPreviewWrapper.style.display = 'none';
+    mediaPreviewBox.innerHTML = '';
+  }
+  projectDialog.showModal();
+};
+
+saveProject.onclick = async (e) => {
+  e.preventDefault();
+  if (!isOwner) return;
+  if (!pTitle.value.trim() || !pCategory.value.trim()) return;
+  const id = projectId.value;
+  const old = id ? data.projects.find(x => x.id === id) : null;
+  let media = old?.media || '';
+  let mediaType = pMediaType.value;
+
+  const file = pMediaFile.files[0];
+  if (file) {
+    if (file.type.startsWith('video/')) {
+      mediaType = 'video';
+    } else if (file.type.startsWith('image/')) {
+      mediaType = 'image';
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      const proceed = confirm(`Notice: This video file is ${(file.size / (1024 * 1024)).toFixed(1)}MB. Browser local storage is limited to ~5MB.\n\nTip: For large videos, it is recommended to place the video in your portfolio folder and enter its filename (e.g. "myvideo.mp4") or host it on Vimeo/YouTube.\n\nDo you want to continue embedding this file anyway?`);
+      if (!proceed) return;
+    }
+
+    try {
+      media = await fileToDataURL(file);
+    } catch (err) {
+      alert('Could not read file. Please try another video format or local filename.');
+      return;
+    }
+  } else if (pMediaUrl.value.trim()) {
+    media = pMediaUrl.value.trim();
+    if (/\.(mp4|webm|mov|ogg|m4v)(\?.*)?$/i.test(media) || /(?:youtube\.com|youtu\.be|vimeo\.com)/i.test(media)) {
+      mediaType = 'video';
+    }
+  }
+
+  const item = {
+    id: id || crypto.randomUUID(),
+    title: pTitle.value.trim(),
+    category: pCategory.value.trim(),
+    description: pDescription.value.trim(),
+    link: pLink.value.trim() || '#',
+    mediaType: mediaType,
+    media
+  };
+  if (old) Object.assign(old, item);
+  else data.projects.unshift(item);
+
+  activeFilter = 'All';
+  persist();
+  render();
+  projectDialog.close();
+  showToast(id ? 'Project updated!' : 'New project added!');
+};
+
+window.deleteProject = (id) => {
+  if (!isOwner) return;
+  const index = data.projects.findIndex(x => x.id === id);
+  if (index === -1) return;
+
+  const projectName = data.projects[index].title || 'this project';
+  if (!window.confirm(`Delete “${projectName}”? This cannot be undone.`)) return;
+
+  data.projects.splice(index, 1);
+  persist();
+  render();
+
+  if (activeFilter !== 'All' && !data.projects.some(x => x.category === activeFilter)) {
+    activeFilter = 'All';
+    render();
+  }
+  showToast('Project deleted');
+};
+
+// =================================================================
+// 6. PUBLISH & EXPORT TOOLS
+// =================================================================
+// Generates production-ready index.html with current data baked into defaults
+publishHtmlBtn.onclick = () => {
+  if (!isOwner) return;
+
+  // Make a clone of the original clean HTML structure
+  let html = document.documentElement.outerHTML;
+
+  // Clean dynamic classes from body in exported file
+  html = html.replace(/<body([^>]*)class="([^"]*)"/i, (match, p1, p2) => {
+    const cleanClass = p2.replace(/\b(editing|is-owner)\b/g, '').trim();
+    return `<body${p1}${cleanClass ? `class="${cleanClass}"` : ''}`;
+  });
+
+  // Ensure modals are closed in the export
+  html = html.replace(/\sopen=""/g, '').replace(/\sopen(?=[\s>])/g, '');
+
+  // Bake current passcode hash and portfolio data into the initial defaults
+  const activePassHash = getStoredPassHash();
+  const serialized = JSON.stringify(data, null, 2);
+  const tagStart = '/* ' + 'INITIAL_CONFIG_START */';
+  const tagEnd = '/* ' + 'INITIAL_CONFIG_END */';
+  const newConfigBlock = `${tagStart}
+// SHA-256 hash for active owner passcode
+const DEFAULT_PASS_HASH = '${activePassHash}';
+
+const defaults = ${serialized};
+${tagEnd}`;
+
+  html = html.replace(
+    /\/\* INITIAL_CONFIG_START \*\/[\s\S]*?\/\* INITIAL_CONFIG_END \*\//,
+    () => newConfigBlock
+  );
+
+  if (!html.toLowerCase().startsWith('<!doctype html>')) {
+    html = '<!DOCTYPE html>\n' + html;
+  }
+
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'index.html';
+  a.click();
+  URL.revokeObjectURL(a.href);
+
+  showToast('🎉 index.html downloaded! Upload this to your hosting.');
+};
+
+exportBtn.onclick = () => {
+  if (!isOwner) return;
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'portfolio-backup.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+};
+
+importInput.onchange = async () => {
+  if (!isOwner) return;
+  const file = importInput.files[0];
+  if (!file) return;
+  try {
+    const parsed = JSON.parse(await file.text());
+    if (!parsed.profile || !Array.isArray(parsed.projects)) throw new Error('Invalid');
+    data = parsed;
+    persist();
+    render();
+    showToast('Portfolio imported successfully!');
+  } catch {
+    alert('That backup file is not valid.');
+  }
+  importInput.value = '';
+};
+
+resetBtn.onclick = () => {
+  if (!isOwner) return;
+  if (confirm('Reset the entire portfolio to original demo content?')) {
+    data = structuredClone(defaults);
+    persist();
+    activeFilter = 'All';
+    render();
+    showToast('Portfolio reset to defaults.');
+  }
+};
+
+// =================================================================
+// 7. INITIALIZATION
+// =================================================================
+document.getElementById('year').textContent = new Date().getFullYear();
+render();
+initAuth();
+
+// =================================================================
+// 8. SCROLL-DRIVEN BACKGROUND PARALLAX ANIMATION
+// =================================================================
+let scrollTicking = false;
+function updateScrollParallax() {
+  const scrollTop = window.scrollY || document.documentElement.scrollTop;
+  const docHeight = Math.max(
+    document.body.scrollHeight,
+    document.documentElement.scrollHeight,
+    document.body.offsetHeight,
+    document.documentElement.offsetHeight,
+    document.body.clientHeight,
+    document.documentElement.clientHeight
+  );
+  const maxScroll = Math.max(1, docHeight - window.innerHeight);
+  const progress = Math.min(1, Math.max(0, scrollTop / maxScroll));
+
+  document.documentElement.style.setProperty('--scroll-percent', progress.toFixed(4));
+  scrollTicking = false;
+}
+
+window.addEventListener('scroll', () => {
+  if (!scrollTicking) {
+    window.requestAnimationFrame(updateScrollParallax);
+    scrollTicking = true;
+  }
+}, { passive: true });
+
+window.addEventListener('resize', updateScrollParallax);
+updateScrollParallax();
+</script>
+</body>
+</html>
